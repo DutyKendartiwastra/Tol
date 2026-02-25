@@ -2,12 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Tol Solo–Jogja XYZ Tile</title>
+  <title>WebGIS Tol Solo–Jogja</title>
 
-  <link
-    rel="stylesheet"
-    href="https://js.arcgis.com/4.29/esri/themes/light/main.css"
-  />
+  <link rel="stylesheet"
+    href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
   <script src="https://js.arcgis.com/4.29/"></script>
 
   <style>
@@ -21,51 +19,35 @@
 </head>
 
 <body>
-  <div id="viewDiv"></div>
+<div id="viewDiv"></div>
 
-  <script>
+<script>
 require([
   "esri/Map",
   "esri/views/MapView",
-  "esri/layers/WebTileLayer",
-  "esri/layers/support/TileInfo"
-], function(Map, MapView, WebTileLayer, TileInfo) {
+  "esri/layers/WMSLayer"
+], function(Map, MapView, WMSLayer) {
 
-  const tileInfo = TileInfo.create({
-    spatialReference: { wkid: 3857 },
-    size: 256
-  });
-
-  const tolLayer = new WebTileLayer({
-    urlTemplate:
-      "https://dutykendartiwastra.github.io/Tol/tile/{level}/{col}/{row}.png",
-    tileInfo: tileInfo,
-    spatialReference: { wkid: 3857 }
+  const tolLayer = new WMSLayer({
+    url: "http://localhost:8080/geoserver/keke/wms",
+    sublayers: [{
+      name: "keke:MOSAIC_WebMercator"
+    }]
   });
 
   const map = new Map({
-    basemap: null,
+    basemap: "satellite",
     layers: [tolLayer]
   });
 
   const view = new MapView({
     container: "viewDiv",
     map: map,
-    spatialReference: { wkid: 3857 },
-    constraints: {
-      minZoom: 14,
-      maxZoom: 18
-    }
-  });
-
-  view.when(() => {
-    view.goTo({
-      center: [110.95, -7.6],
-      zoom: 14
-    });
+    center: [110.8, -7.55],
+    zoom: 14
   });
 
 });
-  </script>
+</script>
 </body>
 </html>
