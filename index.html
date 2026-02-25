@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Tol Solo–Jogja XYZ Tile</title>
+
+  <link
+    rel="stylesheet"
+    href="https://js.arcgis.com/4.29/esri/themes/light/main.css"
+  />
+  <script src="https://js.arcgis.com/4.29/"></script>
+
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+
+  <script>
+
+  require([
+    "esri/Map",
+    "esri/views/MapView",
+    "esri/layers/WebTileLayer"
+  ], function(Map, MapView, WebTileLayer) {
+
+    const tolLayer = new WebTileLayer({
+      urlTemplate:
+        "https://dutykendartiwastra.github.io/Tol/tile/{z}/{x}/{-y}.png",
+      copyright: "Citra Tol Solo–Jogja",
+      spatialReference: { wkid: 3857 }
+    });
+
+    const map = new Map({
+      layers: [tolLayer]
+    });
+
+    const view = new MapView({
+      container: "viewDiv",
+      map: map
+    });
+
+    // 🔥 Tambahan view.when
+    view.when(function() {
+      view.goTo({
+        center: [110.95, -7.6],
+        zoom: 15
+      });
+
+      console.log("Map loaded successfully");
+    });
+
+  });
+
+
+
+  </script>
+</body>
+</html>
