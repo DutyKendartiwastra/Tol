@@ -24,43 +24,35 @@
   <div id="viewDiv"></div>
 
   <script>
+require([
+  "esri/Map",
+  "esri/views/MapView",
+  "esri/layers/WebTileLayer"
+], function(Map, MapView, WebTileLayer) {
 
-  require([
-    "esri/Map",
-    "esri/views/MapView",
-    "esri/layers/WebTileLayer"
-  ], function(Map, MapView, WebTileLayer) {
-
-    const tolLayer = new WebTileLayer({
-      urlTemplate:
-        "https://dutykendartiwastra.github.io/Tol/tile/{z}/{x}/{-y}.png",
-      copyright: "Citra Tol Solo–Jogja",
-      spatialReference: { wkid: 3857 }
-    });
-
-    const map = new Map({
-      layers: [tolLayer]
-    });
-
-    const view = new MapView({
-      container: "viewDiv",
-      map: map
-    });
-
-    // 🔥 Tambahan view.when
-    view.when(function() {
-      view.goTo({
-        center: [110.95, -7.6],
-        zoom: 15
-      });
-
-      console.log("Map loaded successfully");
-    });
-
+  const tolLayer = new WebTileLayer({
+    urlTemplate:
+      "https://dutykendartiwastra.github.io/Tol/tile/{level}/{col}/{row}.png"
   });
 
+  const map = new Map({
+    basemap: null,
+    layers: [tolLayer]
+  });
 
+  const view = new MapView({
+    container: "viewDiv",
+    map: map
+  });
 
+  tolLayer.when(function() {
+    view.goTo({
+      center: [110.95, -7.6],
+      zoom: 15
+    });
+  });
+
+});
   </script>
 </body>
 </html>
