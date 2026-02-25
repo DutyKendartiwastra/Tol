@@ -27,12 +27,20 @@
 require([
   "esri/Map",
   "esri/views/MapView",
-  "esri/layers/WebTileLayer"
-], function(Map, MapView, WebTileLayer) {
+  "esri/layers/WebTileLayer",
+  "esri/layers/support/TileInfo"
+], function(Map, MapView, WebTileLayer, TileInfo) {
+
+  const tileInfo = TileInfo.create({
+    spatialReference: { wkid: 3857 },
+    size: 256
+  });
 
   const tolLayer = new WebTileLayer({
     urlTemplate:
-      "https://dutykendartiwastra.github.io/Tol/tile/{level}/{col}/{row}.png"
+      "https://dutykendartiwastra.github.io/Tol/tile/{level}/{col}/{row}.png",
+    tileInfo: tileInfo,
+    spatialReference: { wkid: 3857 }
   });
 
   const map = new Map({
@@ -42,13 +50,18 @@ require([
 
   const view = new MapView({
     container: "viewDiv",
-    map: map
+    map: map,
+    spatialReference: { wkid: 3857 },
+    constraints: {
+      minZoom: 14,
+      maxZoom: 18
+    }
   });
 
-  tolLayer.when(function() {
+  view.when(() => {
     view.goTo({
       center: [110.95, -7.6],
-      zoom: 15
+      zoom: 14
     });
   });
 
